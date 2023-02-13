@@ -8,7 +8,7 @@ pyenv install 3.10.9
 pyenv global 3.10.9
 ```
 
-# Create virual environment
+# Create virtual environment
 ```
 python -m venv venv
 ```
