@@ -19,3 +19,10 @@ Kindly find the link to my lucid app project [here](https://lucid.app/lucidchart
 ## 3. Physical Architecture Diagram
 
 This is a very detail oriented architecture diagram that depicts physical elements that enable the infrastructure team to do their work including server models, databases, network, zones, systems, subsystems and connectivity. It is often very detail oriented and will not be readily understandable by business users but familiar to developers.
+
+# What is CloudShell?
+
+AWS CloudShell is a browser-based shell that gives you command-line access to your AWS resources in the selected AWS region. AWS CloudShell comes pre-installed with popular tools for resource management and creation. Enjoy pre-installed tools such as AWS CLI, Python, Node.js. 1GB of storage is included free per AWS region. Files saved in the home directory are available in future sessions for the same AWS region.
+You have the same credentials as you used to log in to the console. 
+
+![](../_docs/assets/AWS_Clodshell.png)
