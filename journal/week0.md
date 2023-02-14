@@ -26,3 +26,19 @@ AWS CloudShell is a browser-based shell that gives you command-line access to yo
 You have the same credentials as you used to log in to the console. 
 
 ![](../_docs/assets/AWS_Clodshell.png)
+
+#  What is AWS CLI?
+
+AWS Command Line Interface(AWS CLI) is a unified tool which allows you to manage and monitor all your AWS services from a terminal session on your client.
+
+The benefits of the AWS CLI are 
+* Easy Installation
+* Saves Time
+* Automates Processes
+
+Despite being user-friendly, AWS Management Console is quite a hassle sometimes. But with AWS CLI, if you know the right command, the entire task will just take a few seconds.
+A developer may decide to use the AWS CLI over other methods because it offers more granular control of services and enables script automation. 
+Here is the format of a basic AWS CLI command: 
+
+```aws <command> <subcommand> [options and/or parameters]
+```
