@@ -40,5 +40,6 @@ Despite being user-friendly, AWS Management Console is quite a hassle sometimes.
 A developer may decide to use the AWS CLI over other methods because it offers more granular control of services and enables script automation. 
 Here is the format of a basic AWS CLI command: 
 
-```aws <command> <subcommand> [options and/or parameters]
+```
+aws <command> <subcommand> [options and/or parameters]
 ```
