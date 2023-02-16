@@ -54,9 +54,15 @@ Budgets can be created and tracked from the AWS Budgets dashboard or via the Bud
 
 ## What is an Amazon CloudWatch?
 
-This is a monitoring and management service built for developers, system operators, site reliability engineers and IT managers. CloudWatch provides you with data and actionable insights to monitor your applications, understand and respond to system-wide performance changes, optimize resource utilization and get a unified view of operational health. CloudWatch collects monitoring and operational data in the form of logs, metrics and events, providing you with a unified view of AWS resources applications and services that run on AWS and on-premises servers. You can use CloudWatch to set high resolution alarm, visualize logs and metrics side bu side, take automated actions, troubleshoot issues and discover insights to optimize your applications and ensure they are running smoothly.
+This is a monitoring and management service built for developers, system operators, site reliability engineers and IT managers. CloudWatch provides you with data and actionable insights to monitor your applications, understand and respond to system-wide performance changes, optimize resource utilization and get a unified view of operational health. CloudWatch collects monitoring and operational data in the form of logs, metrics and events, providing you with a unified view of AWS resources applications and services that run on AWS and on-premises servers. You can use CloudWatch to set high resolution alarm, visualize logs and metrics side by side, take automated actions, troubleshoot issues and discover insights to optimize your applications and ensure they are running smoothly.
 Before you create an alarm for your estimated charges, you must enable billing alerts, so that you can monitor your estimated AWS charges and create an alarm using billing metric data. 
 
 ```markdown
-Billing metric is data is stored in the US East (N. Virginia) Region and represents worldwide charges. 
+Billing metric is data is stored in the US East (N. Virginia) Region
+and represents worldwide charges. 
 ```
+
+Created an alarm that sends a notification when your estimated charges for AWS exceed a defined threshold.
+See the alarm created below
+
+![My AWS Alarm](../_docs/assets/AWS_Alarm.png)
