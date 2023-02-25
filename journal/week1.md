@@ -234,7 +234,7 @@ docker push <yourdockehubusername>/<imagename>
 
 ![](../_docs/assets/Dockerhub.png)
 
-Installing and running Docker containers on Localhost
+### Installing and running Docker containers on Localhost
 
 I did the exact same thing I did on gitpod but backend was not communicating with the frontend.
 
