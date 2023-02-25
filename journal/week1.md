@@ -1,15 +1,15 @@
 # Week 1 — App Containerization
 
 ## Topics
-* [Containerize Backend and Frontend Individually]()
-* [Container Orchestration of Backend and Frontend using docker-compose]()
-* [Create the Backend and Frontend Notification Feature in Flask and React respectively]()
+* [Containerize Backend and Frontend Individually](https://github.com/Topsideboss2/aws-bootcamp-cruddur-2023/blob/main/journal/week1.md#containerization-of-frontend-and-backend)
+* [Container Orchestration of Backend and Frontend using docker-compose](https://github.com/Topsideboss2/aws-bootcamp-cruddur-2023/blob/main/journal/week1.md#docker-compose)
+* [Create the Backend and Frontend Notification Feature in Flask and React respectively](https://github.com/Topsideboss2/aws-bootcamp-cruddur-2023/blob/main/journal/week1.md#creating-the-backend-and-frontend-notification-feature)
 * [Accessing the API through Open API]()
-* [Configure DynamoDB and PostgreSQL]()
-* [Running the Dockerfile CMD as an external script]()
-* [Pushing and tagging an image to Dockerhub]()
-* [Installing and running docker containers on local machine]()
-* [Install Docker on EC2 Instance and run containers]()
+* [Configure DynamoDB and PostgreSQL](https://github.com/Topsideboss2/aws-bootcamp-cruddur-2023/blob/main/journal/week1.md#configure-dynamodb-and-postgresql)
+* [Running the Dockerfile CMD as an external script](https://github.com/Topsideboss2/aws-bootcamp-cruddur-2023/blob/main/journal/week1.md#running-the-dockerfile-cmd-as-an-external-script)
+* [Pushing and tagging an image to Dockerhub](https://github.com/Topsideboss2/aws-bootcamp-cruddur-2023/blob/main/journal/week1.md#pushing-an-image-to-dockerhub)
+* [Installing and running docker containers on local machine](https://github.com/Topsideboss2/aws-bootcamp-cruddur-2023/blob/main/journal/week1.md#installing-and-running-docker-containers-on-localhost)
+* [Install Docker on EC2 Instance and run containers](https://github.com/Topsideboss2/aws-bootcamp-cruddur-2023/blob/main/journal/week1.md#install-docker-on-ec2-instance-and-run-containers)
 
 ### Containerization of Frontend and Backend
 
