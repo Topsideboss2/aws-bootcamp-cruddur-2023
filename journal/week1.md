@@ -256,6 +256,8 @@ This worked!
 
 I was able to launch an instance and pull my repo and install docker and run my containers
 
+Also changed directory to `frontend-react` and run the command `npm i`
+
 Running on Termius: 
 
 ![](../_docs/assets/AWSInstanceCruddur.png)
