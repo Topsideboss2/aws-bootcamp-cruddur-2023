@@ -186,3 +186,67 @@ psql -h localhost -U postgres
 ```
 
 ![](../_docs/assets/PostgreSQL.png)
+
+### Running the Dockerfile CMD as an external script
+
+Create a bash file `flask.sh`:
+```
+#!/bin/bash
+python3 -m flash run --host=0.0.0.0 --port=4567
+```
+
+![](../_docs/assets/Flask.sh.png)
+
+Modify your Dockerfile:
+```
+CMD ./flask.sh
+```
+
+![](../_docs/assets/Dockerfile.png)
+
+Build the new image of the container:
+```
+docker build -t backend-flask ./backend-flask
+```
+
+Run an instance of the image as a container:
+```
+docker run -d --rm -p 4567:4567 -it -e FRONTEND_URL='*' -e BACKEND_URL='*' backend-flask
+```
+
+### Pushing an image to Dockerhub
+
+Login to dockerhub on the CLI with the following command: 
+```
+docker login
+```
+
+Tag the image
+```
+docker tag <imagename> <yourdockehubusername>/<imagename>
+```
+
+Push the image
+```
+docker push <yourdockehubusername>/<imagename>
+```
+
+![](../_docs/assets/Dockerhub.png)
+
+Installing and running Docker containers on Localhost
+
+I did the exact same thing I did on gitpod but backend was not communicating with the frontend.
+
+![](../_docs/assets/AWSBootcampFrontendURL(localhost).png)
+
+I then realized that my backend port was not open so I decided to add another layer on the `Dockerfile` for backend-flask directory.  
+
+```
+ENV PORT=4567
+...
+EXPOSE ${PORT}
+```
+
+This worked!
+
+![](../_docs/assets/AWSBootcampFrontendURLfixed(localhost).png)
