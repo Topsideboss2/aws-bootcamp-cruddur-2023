@@ -256,6 +256,7 @@ This worked!
 
 I was able to launch an instance and pull my repo and install docker and run my containers
 
+Changed my environment variables accordingly 
 Also changed directory to `frontend-react` and run the command `npm i`
 
 Running on Termius: 
@@ -264,13 +265,7 @@ Running on Termius:
 
 log:
 ```
-root@ip-172-31-55-201:/home/ubuntu/aws-bootcamp-cruddur-2023# docker compose up
-WARN[0000] The "GITPOD_WORKSPACE_ID" variable is not set. Defaulting to a blank string. 
-WARN[0000] The "GITPOD_WORKSPACE_CLUSTER_HOST" variable is not set. Defaulting to a blank string. 
-WARN[0000] The "GITPOD_WORKSPACE_ID" variable is not set. Defaulting to a blank string. 
-WARN[0000] The "GITPOD_WORKSPACE_CLUSTER_HOST" variable is not set. Defaulting to a blank string. 
-WARN[0000] The "GITPOD_WORKSPACE_ID" variable is not set. Defaulting to a blank string. 
-WARN[0000] The "GITPOD_WORKSPACE_CLUSTER_HOST" variable is not set. Defaulting to a blank string. 
+root@ip-172-31-55-201:/home/ubuntu/aws-bootcamp-cruddur-2023# docker compose up 
 [+] Running 14/14
  ⠿ db Pulled                                                                                                            19.8s
    ⠿ 63b65145d645 Pull complete                                                                                          3.9s
