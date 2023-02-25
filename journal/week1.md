@@ -73,5 +73,116 @@ CMD ["npm", "start"]
 
 ***Quick Sidenote***: Here, the port was already specified as `ENV PORT=3000` and therefore there was no challenges encountered.
 
-![Running Backend](../_docs/assets/AWSBootcampFrontendURL(gitpod).png)
+![Running Frontend](../_docs/assets/AWSBootcampFrontendURL(gitpod).png)
 
+To check images and running container ids:
+```
+docker ps
+docker images
+```
+
+Learned that frontend needs npm installed first. Run:
+```
+npm i
+```
+Or simplify workload by adding `npm install` to gitpod.yml to avoid running it manually everytime after launch of giptod.
+```
+...
+ - name: Initialize Frontend and Backend
+    init: |
+      gp sync-await aws
+      cd /workspace/aws-bootcamp-cruddur-2023/backend-flask
+      pip3 install -r requirements.txt
+      cd /workspace/aws-bootcamp-cruddur-2023/frontend-react-js
+      npm i  
+...
+```
+Also learned that with vs code one can attach a shell of a container and add environment variables in the shell of the container
+
+### Docker-compose
+
+Learned that to run multiple containers in docker, we use `docker compose up` or `docker-compose up`
+
+To kill these containers use the `docker compose down` or `docker-compose down`
+Or you could simply right-click on the file in VS Code and choose "Compose Up" or "Compose Down" as you please
+
+The file is `docker-compose.yml`:
+```
+version: "3.8"
+services:
+  backend-flask:
+    environment:
+      FRONTEND_URL: "https://3000-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
+      BACKEND_URL: "https://4567-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
+    build: ./backend-flask
+    ports:
+      - "4567:4567"
+    volumes:
+      - ./backend-flask:/backend-flask
+  frontend-react-js:
+    environment:
+      REACT_APP_BACKEND_URL: "https://4567-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
+    build: ./frontend-react-js
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend-react-js:/frontend-react-js
+networks: 
+  internal-network:
+    driver: bridge
+    name: cruddur
+
+```
+
+### Creating The Backend and Frontend Notification Feature
+
+When logging in to the web application the notification feature does not work and needs to be added as a functionality
+
+![](../_docs/assets/AWSLoginPage.png)
+
+After following the [YoutubeLink](https://www.youtube.com/watch?v=k-_o0cCpksk&list=PLBfufR7vyJJ7k25byhRXJldB5AiwgNnWv&index=27) by [AndrewBrown](https://twitter.com/andrewbrown?s=21&t=xmLPQvVKkEScBoXv2ELt9A), the link was up and running
+
+![](../_docs/assets/AWSNotificationsPage.png)
+
+### Configure DynamoDB and PostgreSQL
+
+Modify the `docker-compose.yml` file:
+
+```
+...
+  dynamodb-local:
+    # https://stackoverflow.com/questions/67533058/persist-local-dynamodb-data-in-volumes-lack-permission-unable-to-open-databa
+    # We needed to add user:root to get this working.
+    user: root
+    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"
+    image: "amazon/dynamodb-local:latest"
+    container_name: dynamodb-local
+    ports:
+      - "8000:8000"
+    volumes:
+      - "./docker/dynamodb:/home/dynamodblocal/data"
+    working_dir: /home/dynamodblocal
+  db:
+    image: postgres:13-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    ports:
+      - '5432:5432'
+    volumes: 
+      - db:/var/lib/postgresql/data
+...
+
+...
+volumes:
+  db:
+    driver: local
+```
+
+Using postgresql CLI:
+```
+psql -h localhost -U postgres
+```
+
+![](../_docs/assets/PostgreSQL.png)
