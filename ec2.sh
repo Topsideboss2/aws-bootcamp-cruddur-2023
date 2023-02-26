@@ -13,9 +13,9 @@ apt install python3-pip -y
 pip3 install -r requirements.txt
 export FRONTEND_URL="*"
 export BACKEND_URL="*"
-export REACT_APP_BACKEND_URL="http://127.0.0.1:4567"
 echo "Backend initialized"
 cd /home/ubuntu/aws-bootcamp-cruddur-2023/frontend-react-js/
+export REACT_APP_BACKEND_URL="http://127.0.0.1:4567"
 apt update 
 apt install npm -y
 npm install
@@ -23,4 +23,4 @@ echo "installed npm so frontend is initialized"
 echo "install docker"
 cd /home/ubuntu/aws-bootcamp-cruddur-2023/
 apt install docker.io
-apt  install docker-compose
+apt install docker-compose
