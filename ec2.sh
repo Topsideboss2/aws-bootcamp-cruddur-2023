@@ -7,4 +7,9 @@ apt install unzip
 echo "Installed unzip"
 unzip awscliv2.zip
 echo "awscliv2.zip is unzipped"
-cd /home/ubuntu/aws-bootcamp-cruddur-2023/
+rm awscliv2.zip
+cd /home/ubuntu/aws-bootcamp-cruddur-2023/frontend-react-js/
+apt install npm
+npm install
+echo installed npm so frontend is initialized
+
