@@ -13,4 +13,6 @@ apt update
 apt install npm
 npm install
 echo "installed npm so frontend is initialized"
-
+echo "install docker"
+cd /home/ubuntu/aws-bootcamp-cruddur-2023/
+apt install docker.io
