@@ -23,3 +23,4 @@ echo "installed npm so frontend is initialized"
 echo "install docker"
 cd /home/ubuntu/aws-bootcamp-cruddur-2023/
 apt install docker.io
+apt  install docker-compose
