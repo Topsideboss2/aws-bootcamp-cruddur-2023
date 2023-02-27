@@ -15,7 +15,7 @@ export FRONTEND_URL="*"
 export BACKEND_URL="*"
 echo "Backend initialized"
 cd /home/ubuntu/aws-bootcamp-cruddur-2023/frontend-react-js/
-export REACT_APP_BACKEND_URL="http://127.0.0.1:4567"
+export REACT_APP_BACKEND_URL="http://3.220.231.46:4567"
 apt update 
 apt install npm -y
 npm install
