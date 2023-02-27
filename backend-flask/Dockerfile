@@ -21,9 +21,8 @@ COPY . .
 # Set Enviroment Variables (Env Vars)
 # Inside Container and wil remain set when the container is running
 ENV FLASK_ENV=development
-ENV BACKEND_URL="*"
-ENV FRONTEND_URL="*"
-ENV REACT_APP_BACKEND_URL="http://3.220.231.46:4567"
+
+
 EXPOSE ${PORT}
 
 # CMD (Command)
