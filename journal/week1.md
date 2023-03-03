@@ -48,12 +48,19 @@ CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0", "--port=4567"]
 
 ***Quick sidenote***: I had to include the line `ENV PORT=4567` because when running the dockerfile in my local environment I was having challenges opening the port to the public 
 
+
 To build the image run
+
 ```
 docker build -t backend-flask ./backend-flask
 ```
 
-To run the image
+
+To run a container as an instance of the image, you need to specify some environment variables such as FRONTEND_URL and BACKEND_URL:
+```
+docker run --rm -p 4567:4567 -it -e FRONTEND_URL="*" -e BACKEND_URL="*" backend-flask 
+```
+
 ![Running Backend](../_docs/assets/AWS%20Bootcamp%20Backend%20URL.png)
 
 ### Frontend Dockerfile
@@ -187,6 +194,7 @@ psql -h localhost -U postgres
 ```
 
 ![](../_docs/assets/PostgreSQL.png)
+
 
 ### Running the Dockerfile CMD as an external script
 
@@ -440,4 +448,5 @@ aws-bootcamp-cruddur-2023-db-1                 | 2023-02-25 16:20:48.714 UTC [1]
 aws-bootcamp-cruddur-2023-db-1                 | 2023-02-25 16:20:48.722 UTC [49] LOG:  database system was shut down at 2023-02-25 16:20:48 UTC
 aws-bootcamp-cruddur-2023-db-1                 | 2023-02-25 16:20:48.729 UTC [1] LOG:  database system is ready to accept connections
 ```
+
 
