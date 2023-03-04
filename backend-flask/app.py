@@ -19,6 +19,11 @@ import watchtower
 import logging
 from time import strftime
 
+# Rollbar --------
+import rollbar
+import rollbar.contrib.flask
+from flask import got_request_exception
+
 # HoneyComb ---------
 from opentelemetry import trace
 from opentelemetry.instrumentation.flask import FlaskInstrumentor
@@ -33,13 +38,13 @@ from aws_xray_sdk.core import xray_recorder
 from aws_xray_sdk.ext.flask.middleware import XRayMiddleware
 
 # Configuring Logger to Use CloudWatch
-LOGGER = logging.getLogger(__name__)
-LOGGER.setLevel(logging.DEBUG)
-console_handler = logging.StreamHandler()
-cw_handler = watchtower.CloudWatchLogHandler(log_group='cruddur')
-LOGGER.addHandler(console_handler)
-LOGGER.addHandler(cw_handler)
-LOGGER.info("test log")
+# LOGGER = logging.getLogger(__name__)
+# LOGGER.setLevel(logging.DEBUG)
+# console_handler = logging.StreamHandler()
+# cw_handler = watchtower.CloudWatchLogHandler(log_group='cruddur')
+# LOGGER.addHandler(console_handler)
+# LOGGER.addHandler(cw_handler)
+# LOGGER.info("test log")
 
 
 # HoneyComb ---------
@@ -47,6 +52,7 @@ LOGGER.info("test log")
 provider = TracerProvider()
 processor = BatchSpanProcessor(OTLPSpanExporter())
 provider.add_span_processor(processor)
+
 
 # X-RAY ----------
 xray_url = os.getenv("AWS_XRAY_URL")
@@ -64,6 +70,24 @@ app = Flask(__name__)
 # X-RAY ----------
 XRayMiddleware(app, xray_recorder)
 
+# Rollbar --------
+rollbar_access_token = os.getenv('ROLLBAR_ACCESS_TOKEN')
+@app.before_first_request
+def init_rollbar():
+    """init rollbar module"""
+    rollbar.init(
+        # access token
+        rollbar_access_token,
+        # environment name
+        'production',
+        # server root directory, makes tracebacks prettier
+        root=os.path.dirname(os.path.realpath(__file__)),
+        # flask already sets up logging
+        allow_logging_basic_config=False)
+
+    # send exceptions from `app` to rollbar, using flask's signal system.
+    got_request_exception.connect(rollbar.contrib.flask.report_exception, app)
+
 # HoneyComb ---------
 # Initialize automatic instrumentation with Flask
 FlaskInstrumentor().instrument_app(app)
@@ -80,6 +104,11 @@ cors = CORS(
   allow_headers="content-type,if-modified-since",
   methods="OPTIONS,GET,HEAD,POST"
 )
+
+@app.route('/rollbar/test')
+def rollbar_test():
+    rollbar.report_message('Hello World!', 'warning')
+    return "Hello World!"
 
 @app.after_request
 def after_request(response):

@@ -13,6 +13,7 @@ services:
       AWS_ACCESS_KEY_ID: "${AWS_ACCESS_KEY_ID}"
       AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY}"
       AWS_XRAY_SDK_ENABLED: "False"
+      ROLLBAR_ACCESS_TOKEN: "1e1ff50ff9224c34b63e494a133c61b3"
     build: ./backend-flask
     ports:
       - "4567:4567"
