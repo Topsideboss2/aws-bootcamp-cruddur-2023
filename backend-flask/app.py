@@ -38,13 +38,13 @@ from aws_xray_sdk.core import xray_recorder
 from aws_xray_sdk.ext.flask.middleware import XRayMiddleware
 
 # Configuring Logger to Use CloudWatch
-# LOGGER = logging.getLogger(__name__)
-# LOGGER.setLevel(logging.DEBUG)
-# console_handler = logging.StreamHandler()
-# cw_handler = watchtower.CloudWatchLogHandler(log_group='cruddur')
-# LOGGER.addHandler(console_handler)
-# LOGGER.addHandler(cw_handler)
-# LOGGER.info("test log")
+LOGGER = logging.getLogger(__name__)
+LOGGER.setLevel(logging.DEBUG)
+console_handler = logging.StreamHandler()
+cw_handler = watchtower.CloudWatchLogHandler(log_group='cruddur')
+LOGGER.addHandler(console_handler)
+LOGGER.addHandler(cw_handler)
+LOGGER.info("test log")
 
 
 # HoneyComb ---------
@@ -152,6 +152,7 @@ def data_create_message():
   return
 
 @app.route("/api/activities/home", methods=['GET'])
+@xray_recorder.capture('activities_home')
 def data_home():
   data = HomeActivities.run(logger=LOGGER)
   return data, 200
@@ -193,6 +194,7 @@ def data_activities():
   return
 
 @app.route("/api/activities/<string:activity_uuid>", methods=['GET'])
+@xray_recorder.capture('activities_show')
 def data_show_activity(activity_uuid):
   data = ShowActivity.run(activity_uuid=activity_uuid)
   return data, 200
