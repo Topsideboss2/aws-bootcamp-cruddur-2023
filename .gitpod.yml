@@ -26,7 +26,7 @@ tasks:
   - name: datadog
     init: |
       gp sync-await aws
-      docker run -d --name dd-agent -v /var/run/docker.sock:/var/run/docker.sock:ro -v /proc/:/host/proc/:ro -v /sys/fs/cgroup/:/host/sys/fs/cgroup:ro -e DD_API_KEY=ba0546c49475f04956f29a9716430edf -e DD_SITE="us5.datadoghq.com" gcr.io/datadoghq/agent:7
+      docker run -d --name dd-agent -v /var/run/docker.sock:/var/run/docker.sock:ro -v /proc/:/host/proc/:ro -v /sys/fs/cgroup/:/host/sys/fs/cgroup:ro -e DD_API_KEY="${DD_API_KEY}" -e DD_SITE="us5.datadoghq.com" gcr.io/datadoghq/agent:7
 vscode:
   extensions:
     - 42Crunch.vscode-openapi
