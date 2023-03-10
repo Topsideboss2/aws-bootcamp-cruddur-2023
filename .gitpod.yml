@@ -23,6 +23,25 @@ tasks:
       pip3 install -r requirements.txt
       cd /workspace/aws-bootcamp-cruddur-2023/frontend-react-js
       npm i    
+  - name: datadog
+    init: |
+      gp sync-await aws
+      docker run -d --name dd-agent -v /var/run/docker.sock:/var/run/docker.sock:ro -v /proc/:/host/proc/:ro -v /sys/fs/cgroup/:/host/sys/fs/cgroup:ro -e DD_API_KEY="${DD_API_KEY}" -e DD_SITE="us5.datadoghq.com" gcr.io/datadoghq/agent:7
 vscode:
   extensions:
     - 42Crunch.vscode-openapi
+    - ms-azuretools.vscode-docker
+    - ms-python.python
+    - cweijan.vscode-postgresql-client2
+
+ports:
+  - name: frontend
+    port: 3000
+    onOpen: open-browser
+    visibility: public
+  - name: backend
+    port: 4567
+    visibility: public
+  - name: xray-daemon
+    port: 2000
+    visibility: public
