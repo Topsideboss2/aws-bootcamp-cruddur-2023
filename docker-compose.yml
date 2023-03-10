@@ -14,6 +14,8 @@ services:
       AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY}"
       AWS_XRAY_SDK_ENABLED: "False"
       ROLLBAR_ACCESS_TOKEN: "${ROLLBAR_ACCESS_TOKEN}"
+      AWS_COGNITO_USER_POOL_ID: "us-east-1_cVIhSJWoR"
+      AWS_COGNITO_USER_POOL_CLIENT_ID: "17ip4u819unv7ri1ulm8cahci0" 
     build: ./backend-flask
     ports:
       - "4567:4567"
