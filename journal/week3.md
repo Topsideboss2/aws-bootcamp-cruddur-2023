@@ -236,6 +236,7 @@ export default function DesktopSidebar(props) {
 ```
 ## Create a user through the Console
 ![](../_docs/assets/CreateUser.png)
+![](../_docs/assets/Created-users.png)
 
 ## Verify said user through the CLI
 ```shell
