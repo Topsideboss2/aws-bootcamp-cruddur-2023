@@ -5,5 +5,12 @@ NO_COLOR='\033[0m'
 LABEL="db-connect"
 printf "${CYAN}== ${LABEL}${NO_COLOR}\n"
 
+if [ "$1" = "prod" ]; then
+  echo "Running in production mode"
+  CON_URL=$PROD_CONNECTION_URL
+else
+  echo "Not running in production mode"
+  CON_URL=$CONNECTION_URL
+fi
 
-psql $CONNECTION_URL
+psql $CON_URL
