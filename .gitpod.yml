@@ -16,6 +16,9 @@ tasks:
       sudo apt update
       sudo apt install -y postgresql-client-13 libpq-dev
       exit
+    command: |
+      export GITPOD_IP=$(curl ifconfig.me)
+      source "$THEIA_WORKSPACE_ROOT/backend-flask/bin/db-update-sg-rule"
   - name: Initialize Frontend and Backend
     init: |
       gp sync-await aws
