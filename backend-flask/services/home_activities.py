@@ -30,6 +30,9 @@ class HomeActivities:
       LEFT JOIN public.users ON users.uuid = activities.user_uuid
       ORDER BY activities.created_at DESC
     """)
+    print("MYSQL------")
+    print(sql)
+    print("MYSQL------")
 
     with pool.connection() as conn:
       with conn.cursor() as cur:

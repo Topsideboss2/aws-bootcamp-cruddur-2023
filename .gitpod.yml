@@ -9,6 +9,7 @@ tasks:
       sudo ./aws/install
       cd $THEIA_WORKSPACE_ROOT
       gp sync-done aws
+      exit
   - name: postgres
     init: |
       curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc|sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/postgresql.gpg
@@ -25,10 +26,12 @@ tasks:
       pip3 install -r requirements.txt
       cd /workspace/aws-bootcamp-cruddur-2023/frontend-react-js
       npm i    
+      exit
   - name: datadog
     init: |
       gp sync-await aws
       docker run -d --name dd-agent -v /var/run/docker.sock:/var/run/docker.sock:ro -v /proc/:/host/proc/:ro -v /sys/fs/cgroup/:/host/sys/fs/cgroup:ro -e DD_API_KEY="${DD_API_KEY}" -e DD_SITE="us5.datadoghq.com" gcr.io/datadoghq/agent:7
+      exit
 vscode:
   extensions:
     - 42Crunch.vscode-openapi
