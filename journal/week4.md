@@ -66,6 +66,7 @@ DROP DATABASE cruddur; # drop cruddur db if it exist.
 output:
 ![]()
 
+## Provision an RDS Postgres instance using AWS CLI
 To launch an RDS instance that uses Postgres through AWS CLI, run the following command:
 ```shell
 aws rds create-db-instance \
@@ -88,8 +89,8 @@ aws rds create-db-instance \
   --performance-insights-retention-period 7 \
   --no-deletion-protection
 ```
-We will now create scripts to connect to our database, create a database, drop a database, load a schema, seed data, list sessions, and update our gitpod ip.
-First, save these environment variables that we will need:
+
+Next, save these environment variables that we will need:
 ```shell
 export CONNECTION_URL="postgresql://postgres:password@localhost:5432/cruddur"
 gp env CONNECTION_URL="postgresql://postgres:password@localhost:5432/cruddur"
@@ -102,7 +103,16 @@ gp env DB_SG_ID="sg-03612a80ef9ea9c32"
 export DB_SG_RULE_ID="sgr-000875ae83d6cc004"
 gp env DB_SG_RULE_ID="sgr-000875ae83d6cc004"
 ```
+We will add the environment variable `$CONNECTION_URL` to `docker-compose.yml`:
+```yaml
+  backend-flask:
+    environment:
+      CONNECTION_URL: "${CONNECTION_URL}"
+```
 
+## Bash scripting for common database actions
+
+We will now create scripts to connect to our database, create a database, drop a database, load a schema, seed data, list sessions, and update our gitpod ip.
 #### `db-connect`
 ```shell
 #!/usr/bin/bash
@@ -362,3 +372,5 @@ output:
 ![]()
 
 ## Install Postgres Driver in Backend Application
+
+## Create new activities with a database insert
