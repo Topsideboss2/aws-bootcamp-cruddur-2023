@@ -1,11 +1,11 @@
 # Week 4 — Postgres and RDS
 
 ## Topics
-* [Launch Postgres locally via a container]()
-* [Provision an RDS Postgres instance using AWS CLI]()
-* [Bash scripting for common database actions]()
-* [Install Postgres Driver in Backend Application]()
-* [Create new activities with a database insert]()
+* [Launch Postgres locally via a container](https://github.com/Topsideboss2/aws-bootcamp-cruddur-2023/blob/main/journal/week4.md#launch-postgres-locally)
+* [Provision an RDS Postgres instance using AWS CLI](https://github.com/Topsideboss2/aws-bootcamp-cruddur-2023/blob/main/journal/week4.md#provision-an-rds-postgres-instance-using-aws-cli)
+* [Bash scripting for common database actions](https://github.com/Topsideboss2/aws-bootcamp-cruddur-2023/blob/main/journal/week4.md#bash-scripting-for-common-database-actions)
+* [Install Postgres Driver in Backend Application](https://github.com/Topsideboss2/aws-bootcamp-cruddur-2023/blob/main/journal/week4.md#install-postgres-driver-in-backend-application)
+* [Create new activities with a database insert](https://github.com/Topsideboss2/aws-bootcamp-cruddur-2023/blob/main/journal/week4.md#create-new-activities-with-a-database-insert)
 
 ## Launch Postgres Locally
 
