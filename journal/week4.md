@@ -2,9 +2,8 @@
 
 ## Topics
 * [Launch Postgres locally via a container]()
+* [Provision an RDS Postgres instance using AWS CLI]()
 * [Bash scripting for common database actions]()
-* [Seed Postgres Database table with data]()
-* [Provision an RDS Postgres instance]()
 * [Install Postgres Driver in Backend Application]()
 * [Create new activities with a database insert]()
 
@@ -249,3 +248,117 @@ aws ec2 modify-security-group-rules \
       --security-group-rules "SecurityGroupRuleId=$DB_SG_RULE_ID,SecurityGroupRule={Description=GITPOD,IpProtocol=tcp,FromPort=5432,ToPort=5432,CidrIpv4=$GITPOD_IP/32}"
 ```
 
+Add file `/backend-flask/db/schema.sql` that will create our schema for the databases:
+```sql
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+DROP TABLE IF EXISTS public.users;
+DROP TABLE IF EXISTS public.activities;
+
+CREATE TABLE public.users (
+  uuid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  display_name text NOT NULL,
+  handle text NOT NULL,
+  email text,
+  cognito_user_id text NOT NULL,
+  created_at TIMESTAMP default current_timestamp NOT NULL
+);
+
+CREATE TABLE public.activities (
+  uuid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  user_uuid UUID NOT NULL,
+  message text NOT NULL,
+  replies_count integer DEFAULT 0,
+  reposts_count integer DEFAULT 0,
+  likes_count integer DEFAULT 0,
+  reply_to_activity_uuid integer,
+  expires_at TIMESTAMP,
+  created_at TIMESTAMP default current_timestamp NOT NULL
+);
+```
+
+Add another file `/backend-flask/db/seed.sql` that will seed data into our database after creating the schema:
+```sql
+-- this file was manually created
+INSERT INTO public.users (display_name, handle, email, cognito_user_id)
+VALUES
+  ('Andrew Brown', 'andrewbrown' , 'andrew@exampro.co' , 'MOCK'),
+  ('Mark Kibara', 'topsideboss2', 'markkibara2014@gmail.com', 'MOCK'),
+  ('Andrew Bayko', 'bayko' , 'andrewbayko@exampro.co' , 'MOCK');
+
+INSERT INTO public.activities (user_uuid, message, expires_at)
+VALUES
+  (
+    (SELECT uuid from public.users WHERE users.handle = 'topsideboss2' LIMIT 1),
+    'Hey everyone, welcome to my Cruddur Web App!',
+    current_timestamp + interval '10 day'
+  )
+```
+
+Add another file `backend-flask/db/sql/activities/create.sql` that will be used to create an activity:
+```sql
+INSERT INTO public.activities (
+   user_uuid,
+   message,
+   expires_at
+ )
+ VALUES (
+   (SELECT uuid 
+     FROM public.users 
+     WHERE users.handle = %(handle)s
+     LIMIT 1
+   ),
+   %(message)s,
+   %(expires_at)s
+ ) RETURNING uuid;
+```
+
+Add another file `backend-flask/db/sql/activities/home.sql` that will be used for home page:
+```sql
+SELECT
+   activities.uuid,
+   users.display_name,
+   users.handle,
+   activities.message,
+   activities.replies_count,
+   activities.reposts_count,
+   activities.likes_count,
+   activities.reply_to_activity_uuid,
+   activities.expires_at,
+   activities.created_at
+ FROM public.activities
+ LEFT JOIN public.users ON users.uuid = activities.user_uuid
+ ORDER BY activities.created_at DESC
+```
+Add another file `backend-flask/db/sql/activities/object.sql` that will be used for objects:
+```sql
+SELECT
+   activities.uuid,
+   users.display_name,
+   users.handle,
+   activities.message,
+   activities.created_at,
+   activities.expires_at
+ FROM public.activities
+ INNER JOIN public.users ON users.uuid = activities.user_uuid 
+ WHERE 
+   activities.uuid = %(uuid)s
+```
+
+Try to connect to local database 
+```shell
+cd backend-flask/bin/
+source db-connect
+```
+output:
+![]()
+
+Try to connect to RDS database
+```shell
+cd backend-flask/bin/
+source db-connect prod
+```
+output:
+![]()
+
+## Install Postgres Driver in Backend Application
