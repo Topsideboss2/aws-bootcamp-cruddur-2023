@@ -5,8 +5,8 @@
 * [Provision an RDS Postgres instance using AWS CLI](https://github.com/Topsideboss2/aws-bootcamp-cruddur-2023/blob/main/journal/week4.md#provision-an-rds-postgres-instance-using-aws-cli)
 * [Bash scripting for common database actions](https://github.com/Topsideboss2/aws-bootcamp-cruddur-2023/blob/main/journal/week4.md#bash-scripting-for-common-database-actions)
 * [Install Postgres Driver in Backend Application](https://github.com/Topsideboss2/aws-bootcamp-cruddur-2023/blob/main/journal/week4.md#install-postgres-driver-in-backend-application)
-* [Create a Lambda Function]()
-* [Created Congito Trigger to insert user into database]()
+* [Create a Lambda Function](https://github.com/Topsideboss2/aws-bootcamp-cruddur-2023/blob/main/journal/week4.md#create-a-lambda-function)
+* [Created Congito Trigger to insert user into database](https://github.com/Topsideboss2/aws-bootcamp-cruddur-2023/blob/main/journal/week4.md#create-congito-trigger-to-lambda)
 * [Create new activities with a database insert](https://github.com/Topsideboss2/aws-bootcamp-cruddur-2023/blob/main/journal/week4.md#create-new-activities-with-a-database-insert)
 
 ## Launch Postgres Locally
