@@ -5,6 +5,8 @@
 * [Provision an RDS Postgres instance using AWS CLI](https://github.com/Topsideboss2/aws-bootcamp-cruddur-2023/blob/main/journal/week4.md#provision-an-rds-postgres-instance-using-aws-cli)
 * [Bash scripting for common database actions](https://github.com/Topsideboss2/aws-bootcamp-cruddur-2023/blob/main/journal/week4.md#bash-scripting-for-common-database-actions)
 * [Install Postgres Driver in Backend Application](https://github.com/Topsideboss2/aws-bootcamp-cruddur-2023/blob/main/journal/week4.md#install-postgres-driver-in-backend-application)
+* [Create a Lambda Function]()
+* [Created Congito Trigger to insert user into database]()
 * [Create new activities with a database insert](https://github.com/Topsideboss2/aws-bootcamp-cruddur-2023/blob/main/journal/week4.md#create-new-activities-with-a-database-insert)
 
 ## Launch Postgres Locally
@@ -258,6 +260,10 @@ aws ec2 modify-security-group-rules \
       --security-group-rules "SecurityGroupRuleId=$DB_SG_RULE_ID,SecurityGroupRule={Description=GITPOD,IpProtocol=tcp,FromPort=5432,ToPort=5432,CidrIpv4=$GITPOD_IP/32}"
 ```
 
+Make the shell scripts executables:
+```shell
+chmod u+x db-connect db-create db-drop db-update-sg-rule db-seed db-sessions db-schema-load db-setup
+```
 Add file `/backend-flask/db/schema.sql` that will create our schema for the databases:
 ```sql
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
@@ -371,6 +377,197 @@ source db-connect prod
 output:
 ![]()
 
-## Install Postgres Driver in Backend Application
+## Configure Postgres Driver (Psycopg3) in Backend Application
+
+First, install the driver using pip by including it in the `/backend-flask/requirements.txt`
+```
+psycopg[binary]
+psycopg[pool]
+```
+Run `pip install -r backend-flask/requirements.txt`
+
+We will utilize connection pulling so that we cannot run out of connections when users are using the database.
+Create a file `/backend-flask/lib/db.py` and add the following python code:
+```python
+from psycopg_pool import ConnectionPool
+import os
+import re
+import sys
+from flask import current_app as app
+
+class Db:
+  def __init__(self):
+    self.init_pool()
+
+  def template(self,*args):
+    pathing = list((app.root_path,'db','sql',) + args)
+    pathing[-1] = pathing[-1] + ".sql"
+
+    template_path = os.path.join(*pathing)
+
+    green = '\033[92m'
+    no_color = '\033[0m'
+    print("\n")
+    print(f'{green} Load SQL Template: {template_path} {no_color}')
+
+    with open(template_path, 'r') as f:
+      template_content = f.read()
+    return template_content
+
+  def init_pool(self):
+    connection_url = os.getenv("CONNECTION_URL")
+    self.pool = ConnectionPool(connection_url)
+  # we want to commit data such as an insert
+  # be sure to check for RETURNING in all uppercases
+  def print_params(self,params):
+    blue = '\033[94m'
+    no_color = '\033[0m'
+    print(f'{blue} SQL Params:{no_color}')
+    for key, value in params.items():
+      print(key, ":", value)
+
+  def print_sql(self,title,sql):
+    cyan = '\033[96m'
+    no_color = '\033[0m'
+    print(f'{cyan} SQL STATEMENT-[{title}]------{no_color}')
+    print(sql)
+  def query_commit(self,sql,params={}):
+    self.print_sql('commit with returning',sql)
+
+    pattern = r"\bRETURNING\b"
+    is_returning_id = re.search(pattern, sql)
+
+    try:
+      with self.pool.connection() as conn:
+        cur =  conn.cursor()
+        cur.execute(sql,params)
+        if is_returning_id:
+          returning_id = cur.fetchone()[0]
+        conn.commit() 
+        if is_returning_id:
+          return returning_id
+    except Exception as err:
+      self.print_sql_err(err)
+  # when we want to return a json object
+  def query_array_json(self,sql,params={}):
+    self.print_sql('array',sql)
+
+    wrapped_sql = self.query_wrap_array(sql)
+    with self.pool.connection() as conn:
+      with conn.cursor() as cur:
+        cur.execute(wrapped_sql,params)
+        json = cur.fetchone()
+        return json[0]
+  # When we want to return an array of json objects
+  def query_object_json(self,sql,params={}):
+
+    self.print_sql('json',sql)
+    self.print_params(params)
+    wrapped_sql = self.query_wrap_object(sql)
+
+    with self.pool.connection() as conn:
+      with conn.cursor() as cur:
+        cur.execute(wrapped_sql,params)
+        json = cur.fetchone()
+        if json == None:
+          "{}"
+        else:
+          return json[0]
+  def query_wrap_object(self,template):
+    sql = f"""
+    (SELECT COALESCE(row_to_json(object_row),'{{}}'::json) FROM (
+    {template}
+    ) object_row);
+    """
+    return sql
+  def query_wrap_array(self,template):
+    sql = f"""
+    (SELECT COALESCE(array_to_json(array_agg(row_to_json(array_row))),'[]'::json) FROM (
+    {template}
+    ) array_row);
+    """
+    return sql
+  def print_sql_err(self,err):
+    # get details about the exception
+    err_type, err_obj, traceback = sys.exc_info()
+
+    # get the line number when exception occured
+    line_num = traceback.tb_lineno
+
+    # print the connect() error
+    print ("\npsycopg ERROR:", err, "on line number:", line_num)
+    print ("psycopg traceback:", traceback, "-- type:", err_type)
+
+    # print the pgcode and pgerror exceptions
+    print ("pgerror:", err.pgerror)
+    print ("pgcode:", err.pgcode, "\n")
+
+db = Db()
+```
+## Create a Lambda Function
+We create a Lambda function that is used to request the new user data -orchestrated using AWS Cognito  passed down to the RDS instance.
+The handler function is stored in `aws/json/lambda/cruddur-post-confirmation`file:
+```python
+import json
+import psycopg2
+import os
+
+def lambda_handler(event, context):
+    user = event['request']['userAttributes']
+    print('userAttributes')
+    print(user)
+
+    user_display_name  = user['name']
+    user_email         = user['email']
+    user_handle        = user['preferred_username']
+    user_cognito_id    = user['sub']
+    try:
+      print('entered-try')
+      sql = f"""
+         INSERT INTO public.users (
+          display_name, 
+          email,
+          handle, 
+          cognito_user_id
+          ) 
+        VALUES(%s,%s,%s,%s)
+      """
+      print('SQL Statement ----')
+      print(sql)
+      conn = psycopg2.connect(os.getenv('CONNECTION_URL'))
+      cur = conn.cursor()
+      params = [
+        user_display_name,
+        user_email,
+        user_handle,
+        user_cognito_id
+      ]
+      cur.execute(sql,*params)
+      conn.commit() 
+
+    except (Exception, psycopg2.DatabaseError) as error:
+      print(error)
+    finally:
+      if conn is not None:
+          cur.close()
+          conn.close()
+          print('Database connection closed.')
+    return event
+```
+***NB:*** The lambda is created in the same VPC as the rds instance. It uses Python 3.8.
+Env variables passed are `$CONNECTION_URL` which links it to the rds instance. Architecture is x86_64. To the security group (default), allow port 5432 to the Gitpod Instance. 
+
+The layer added to our Lambda is the psycopg2 library for Python shown below
+```
+arn:aws:lambda:us-east-1:898466741470:layer:psycopg2-py38:2
+```
+
+Now we need to add permissions to our lambda, create a policy that will allow it to attach a NIC to each AZ.
+
+
+## Create Congito Trigger to Lambda
+Under the user pool properties of Amazon Cognito, add the function as a Post Confirmation lambda trigger.
+The account needs to be removed from AWS Cognito and recreated from Cruddur in order to test that the user is in fact inserted into the AWS RDS database.
 
 ## Create new activities with a database insert
+We need to be able to create a crud and insert into the RDS. To do this, we need to configure `backend-flask/services/create_activity.py`.
