@@ -53,20 +53,16 @@ psql -U postgres -h localhost
 # password is 'password'
 \l # list all databases 
 ```
-output:
-![]()
+
 ```shell
 CREATE DATABASE cruddur; # NOW, create the new cruddur db.
 \l # list all databases 
 ```
-output:
-![]()
+
 ```shell
 DROP DATABASE cruddur; # drop cruddur db if it exist.
 \l # list all databases
 ```
-output:
-![]()
 
 ## Provision an RDS Postgres instance using AWS CLI
 To launch an RDS instance that uses Postgres through AWS CLI, run the following command:
@@ -259,6 +255,7 @@ aws ec2 modify-security-group-rules \
      --group-id $DB_SG_ID \
       --security-group-rules "SecurityGroupRuleId=$DB_SG_RULE_ID,SecurityGroupRule={Description=GITPOD,IpProtocol=tcp,FromPort=5432,ToPort=5432,CidrIpv4=$GITPOD_IP/32}"
 ```
+![](../_docs/assets/db-update-gitpod-ip.png)
 
 Make the shell scripts executables:
 ```shell
@@ -366,17 +363,16 @@ Try to connect to local database
 cd backend-flask/bin/
 source db-connect
 ```
-output:
-![]()
+Output for local Database:
+![](../_docs/assets/db-setup.png)
 
 Try to connect to RDS database
 ```shell
 cd backend-flask/bin/
 source db-connect prod
 ```
-output:
-![]()
-
+Output for RDS:
+![](../_docs/assets/db-setup(prod).png)
 ## Configure Postgres Driver (Psycopg3) in Backend Application
 
 First, install the driver using pip by including it in the `/backend-flask/requirements.txt`
@@ -554,20 +550,35 @@ def lambda_handler(event, context):
           print('Database connection closed.')
     return event
 ```
+
+![](../_docs/assets/AWS-Lambda-Function.png)
+
 ***NB:*** The lambda is created in the same VPC as the rds instance. It uses Python 3.8.
 Env variables passed are `$CONNECTION_URL` which links it to the rds instance. Architecture is x86_64. To the security group (default), allow port 5432 to the Gitpod Instance. 
+
+![](../_docs/assets/AWS-Lambda-SG.png)
 
 The layer added to our Lambda is the psycopg2 library for Python shown below
 ```
 arn:aws:lambda:us-east-1:898466741470:layer:psycopg2-py38:2
 ```
+![](../_docs/assets/AWS-Lambda-Layer.png)
 
-Now we need to add permissions to our lambda, create a policy that will allow it to attach a NIC to each AZ.
+Now we need to add permissions to our lambda, create a policy that will allow it to attach a NIC to each AZ. Now attach that policy to our Lambda Function
+![](../_docs/assets/AWS-Lambda-Policy.png)
 
+![](../_docs/assets/AWS-Lambda-Permissions.png)
 
 ## Create Congito Trigger to Lambda
 Under the user pool properties of Amazon Cognito, add the function as a Post Confirmation lambda trigger.
 The account needs to be removed from AWS Cognito and recreated from Cruddur in order to test that the user is in fact inserted into the AWS RDS database.
 
+![](../_docs/assets/AWS-Cognito-Lambda-Trigger.png)
+
 ## Create new activities with a database insert
 We need to be able to create a crud and insert into the RDS. To do this, we need to configure `backend-flask/services/create_activity.py`.
+This was not easy even following through. I decided to change the hard coded 'MOCK' data to include my cruds.
+
+![](../_docs/assets/Crud2.png)
+
+![](../_docs/assets/Crud.png)
