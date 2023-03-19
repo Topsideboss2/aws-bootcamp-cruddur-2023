@@ -93,8 +93,8 @@ Next, save these environment variables that we will need:
 export CONNECTION_URL="postgresql://postgres:password@localhost:5432/cruddur"
 gp env CONNECTION_URL="postgresql://postgres:password@localhost:5432/cruddur"
 
-export PROD_CONNECTION_URL="postgresql://root:***@cruddur-db-instance.c0jj0dvjjrlg.us-east-1.rds.amazonaws.com:5432/cruddur"
-gp env PROD_CONNECTION_URL="postgresql://postgres::***@cruddur-db-instance.c0jj0dvjjrlg.us-east-1.rds.amazonaws.com:5432/cruddur"
+export PROD_CONNECTION_URL="postgresql://root:***@cruddur-db-instance.*********.us-east-1.rds.amazonaws.com:5432/cruddur"
+gp env PROD_CONNECTION_URL="postgresql://postgres::***@cruddur-db-instance.*********.us-east-1.rds.amazonaws.com:5432/cruddur"
 
 export DB_SG_ID="sg-03612a80ef9ea9c32"
 gp env DB_SG_ID="sg-03612a80ef9ea9c32"
