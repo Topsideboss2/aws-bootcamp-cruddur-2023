@@ -1,0 +1,13 @@
+#!/usr/bin/bash
+-e
+
+CYAN='\033[1;36m'
+NO_COLOR='\033[0m'
+LABEL="setup"
+printf "${CYAN}== ${LABEL}${NO_COLOR}\n"
+
+source drop
+source create
+source schema-load
+source seed
+source sessions

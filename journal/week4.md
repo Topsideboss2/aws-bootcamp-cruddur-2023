@@ -259,7 +259,7 @@ aws ec2 modify-security-group-rules \
 
 Make the shell scripts executables:
 ```shell
-chmod u+x db-connect db-create db-drop db-update-sg-rule db-seed db-sessions db-schema-load db-setup
+chmod u+x connect create drop update-sg-rule seed sessions schema-load setup
 ```
 Add file `/backend-flask/db/schema.sql` that will create our schema for the databases:
 ```sql
@@ -361,7 +361,7 @@ SELECT
 Try to connect to local database 
 ```shell
 cd backend-flask/bin/
-source db-connect
+source connect
 ```
 Output for local Database:
 ![](../_docs/assets/db-setup.png)
@@ -369,7 +369,7 @@ Output for local Database:
 Try to connect to RDS database
 ```shell
 cd backend-flask/bin/
-source db-connect prod
+source connect prod
 ```
 Output for RDS:
 ![](../_docs/assets/db-setup(prod).png)
