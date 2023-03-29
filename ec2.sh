@@ -30,7 +30,7 @@ NO_COLOR='\033[0m'
 LABEL="Backend initialized"
 printf "${CYAN}== ${LABEL}${NO_COLOR}\n"
 cd /home/ubuntu/aws-bootcamp-cruddur-2023/frontend-react-js/
-export REACT_APP_BACKEND_URL="http://3.220.231.46:4567"
+export REACT_APP_BACKEND_URL="http://54.146.90.96:4567"
 apt update 
 apt install npm -y
 npm install
