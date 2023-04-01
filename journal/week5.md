@@ -616,7 +616,52 @@ for handle, sub in users.items():
 ```
 
 ## Implementing Pattern A
+
+The main objective is to see message groups in your messages tab. These messages are then in chronological order. From newest to oldest.
+
+![](../_docs/assets/Messages-1.png)
 ## Implementing Pattern B
+
+The main objective here is to be able to see messages in an already existing message group.
+
+![](../_docs/assets/Messages-2.png)
 ## Implementing Pattern C
+
+We want to be able to create messages in an already existing message group.
+
+![](../_docs/assets/Messages-3.png)
 ## Implementing Pattern D
+
+We want to be able to create messages in a new message group. We need a user in the database and append `/new/Murithi777` to the url
+
+![](../_docs/assets/Messages-4.png)
 ## Implementing Pattern E
+
+Here, we will now work with production database. 
+Run `/backend-flask/bin/ddb/schema-load prod`
+
+We will create a VPC endpoint to be able to access our DynamoDB. 
+This will create a table "cruddur-messages" in dynamodb aws account that we will use henceforth.
+
+![](../_docs/assets/DynamoDB-Prod-Table.png)
+
+No need to seed this data as we can just create data from the web app itself.
+Next, turn on streams. 
+
+![](../_docs/assets/DynamoDB-Stream-On.png)
+
+Now create a Lambda function that will run whenever a message is created. We also need to attach the right permissions to this lambda function.
+
+![](../_docs/assets/Lambda-Function.png)
+
+Permissions:
+
+![](../_docs/assets/Lambda-Permission-Policy.png)
+
+Create a Lambda trigger for our function from our dynamodb database
+
+![](../_docs/assets/Lambda-Trigger.png)
+
+View logs from Cloudwatch:
+
+![](../_docs/assets/Log-Events.png)
