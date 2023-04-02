@@ -11,7 +11,7 @@
             ],
             "Resource": [
                 "arn:aws:dynamodb:us-east-1:838747191349:table/cruddur-messages",
-                "arn:aws:dynamodb:ca-central-1:838747191349:table/cruddur-messages/index/message-group-sk-index"
+                "arn:aws:dynamodb:us-east-1:838747191349:table/cruddur-messages/index/message-group-sk-index"
             ]
         }
     ]
