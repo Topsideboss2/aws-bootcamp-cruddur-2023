@@ -6,9 +6,9 @@
     "enableExecuteCommand": true,
     "loadBalancers": [
       {
-          "targetGroupArn": "arn:aws:elasticloadbalancing:us-east-1:838747191349:targetgroup/cruddur-backend-flask-tg/45225f914c8243cb",
-          "containerName": "backend-flask",
-          "containerPort": 4567
+          "targetGroupArn": "arn:aws:elasticloadbalancing:us-east-1:838747191349:targetgroup/cruddur-frontend-react-js-tg/db205865aaa17c84",
+          "containerName": "frontend-react-js",
+          "containerPort": 3000
       }
   ],
     "networkConfiguration": {
