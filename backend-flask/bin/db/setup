@@ -10,4 +10,4 @@ source drop
 source create
 source schema-load
 source seed
-source update_cognito_user_ids
+python update_cognito_user_ids
