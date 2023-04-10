@@ -38,6 +38,7 @@ tasks:
       sudo dpkg -i session-manager-plugin.deb
       session-manager-plugin
       cd "$THEIA_WORKSPACE_ROOT/backend-flask/"
+      exit
 vscode:
   extensions:
     - 42Crunch.vscode-openapi
