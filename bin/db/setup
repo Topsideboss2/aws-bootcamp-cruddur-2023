@@ -6,8 +6,11 @@ NO_COLOR='\033[0m'
 LABEL="setup"
 printf "${CYAN}== ${LABEL}${NO_COLOR}\n"
 
-source drop
-source create
-source schema-load
-source seed
-python update_cognito_user_ids
+ABS_PATH=$(readlink -f "$0")
+bin_path=$(dirname $ABS_PATH)
+
+source "$bin_path/db/drop"
+source "$bin_path/db/create"
+source "$bin_path/db/schema-load"
+source "$bin_path/db/seed"
+python "$bin_path/db/update_cognito_user_ids"

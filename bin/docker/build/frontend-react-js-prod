@@ -1,11 +1,19 @@
-!#/usr/bin/bash
+#!/usr/bin/bash
 
- docker build \
- --build-arg REACT_APP_BACKEND_URL="https://api.topsideboss2.me" \
- --build-arg REACT_APP_AWS_PROJECT_REGION="$AWS_DEFAULT_REGION" \
- --build-arg REACT_APP_AWS_COGNITO_REGION="$AWS_DEFAULT_REGION" \
- --build-arg REACT_APP_AWS_USER_POOLS_ID="us-east-1_cVIhSJWoR" \
- --build-arg REACT_APP_CLIENT_ID="17ip4u819unv7ri1ulm8cahci0" \
- -t frontend-react-js \
- -f Dockerfile.prod \
- ../../../
+
+ABS_PATH=$(readlink -f "$0")
+BUILD_PATH=$(dirname $ABS_PATH)
+DOCKER_PATH=$(dirname $BUILD_PATH)
+BIN_PATH=$(dirname $DOCKER_PATH)
+PROJECT_PATH=$(dirname $BIN_PATH)
+FRONTEND_REACT_JS_PATH="$PROJECT_PATH/frontend-react-js"
+
+docker build \
+--build-arg REACT_APP_BACKEND_URL="https://api.topsideboss2.me" \
+--build-arg REACT_APP_AWS_PROJECT_REGION="$AWS_DEFAULT_REGION" \
+--build-arg REACT_APP_AWS_COGNITO_REGION="$AWS_DEFAULT_REGION" \
+--build-arg REACT_APP_AWS_USER_POOLS_ID="us-east-1_cVIhSJWoR" \
+--build-arg REACT_APP_CLIENT_ID="17ip4u819unv7ri1ulm8cahci0" \
+-t frontend-react-js \
+-f "$FRONTEND_REACT_JS_PATH/Dockerfile.prod" \
+"$FRONTEND_REACT_JS_PATH/."
