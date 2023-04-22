@@ -1,3 +1,4 @@
 docker/dynamodb/shared-local-instance.db
 session-manager-plugin.deb
 frontend-react-js/build/*
+*.env
